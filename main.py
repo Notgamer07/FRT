@@ -14,6 +14,7 @@ def collision(obj, player, button)->bool:
 
 pygame.init()
 
+
 WIDTH = 800
 HEIGHT = 600
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
@@ -34,16 +35,17 @@ level = 1
 questionNumber = 1
 
 q = Question(level,questionNumber)
-buttons = falling_button(q.option)
+buttons = []
 
 menuButtons = menu_button()
 
-buttonClicked = 0
 run = True
 clock = pygame.time.Clock()
 current_screen = 'menu'
+blocksTime = 0
 while run:
-    dt = clock.tick(100) / 1000 #delta time in seconds
+    globalTime = pygame.time.get_ticks()
+    dt = clock.tick(60) / 1000 #delta time in seconds
     screen.fill('black')
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -51,6 +53,7 @@ while run:
 
     '''MENU SCREEN'''
     if current_screen == 'menu':
+        cooldownTimer = 2000 #2 secons
         draw_background(screen)
         for i,button in enumerate(menuButtons):
             button.draw(screen)
@@ -71,17 +74,18 @@ while run:
         if current_screen == 'game':
             level, questionNumber = 1,1
             q = Question(level, questionNumber)
-            buttons = falling_button(q.option)
+            buttons = []
         continue
     
     '''GAME SCREEN'''
-    
-    
-    """DRAW THE BACKGROUND FIRST SO THAT EVERYTHING ELES GETS OVERLAPPED ON TOP OF IT"""
+
+
+    """DRAW THE BACKGROUND FIRST SO THAT EVERYTHING ELES GETS OVERLAPPED ON TOP OF IT""" 
     draw_background(screen)
     
-    falling_animation(screen, buttons, dt)
-
+    if (globalTime - blocksTime) >= cooldownTimer:
+        blocksTime = pygame.time.get_ticks()
+        buttons = falling_button(q, buttons)
     
     # Player Movement
     for button in buttons:
@@ -91,13 +95,13 @@ while run:
             if questionNumber<3:
                 questionNumber += 1
                 q = Question(level,questionNumber)
-                buttons = falling_button(q.option)
+                buttons.remove(button)
             elif level <10:
                 questionNumber = 1
                 level += 1
                 questionNumber += 1
                 q = Question(level,questionNumber)
-                buttons = falling_button(q.option)
+                buttons.remove(button)
         elif isCorrect == False:
             current_screen = 'defeat'
             continue
@@ -113,6 +117,7 @@ while run:
     player.center = (round(playerPos.x), round(playerPos.y))
 
     # we draw  button ->label->player .. so that player is above button and button is behind label
+    falling_animation(screen,buttons,dt)
     draw_label(screen,q.question)
     pygame.draw.rect(screen,playerColor,player,border_radius = 8)
     draw_score(screen,score)
