@@ -3,6 +3,7 @@ from package import Label,Button
 from random import randint
 import random
 from os.path import join, dirname
+from datahandle import Question
 
 defeat_img = pygame.image.load(join(dirname(__file__),'img','defeated.png'))
 defeat_img = pygame.transform.scale(defeat_img, (550,100))
@@ -37,16 +38,17 @@ def draw_background(screen):
         screen.blit(star_frames[frame_no[i]],star_pos[i])
 
 
-def falling_button(optionText):
-    listOfButton = []
-    for i in range(len(optionText)):
-        x_position = randint(0,500)
-        y_poition = randint(0,1700)*-1
-        button = Button(x_position,y_poition,(80,80),optionText[i],color=Colors[i],bold=True, autofit=True)
-        listOfButton.append(button)
+def falling_button(ques : Question , buttons : list)->list:
+    listOfButton = buttons
+    optionText = ques.option[randint(0,3)]
+    x_position = randint(0,800 - 80 ) # 800 is Width of the screen
+    button = Button(x_position,-80,(80,80),optionText,color=Colors[randint(0, (len(Colors))-1)],bold=True, autofit=True)
+    listOfButton.append(button)
     return listOfButton
 
 def falling_animation(screen, buttons, dt):
+    if buttons is []:
+        pass
     for button in buttons:
         if button.rect.top >= 600:
             del button
