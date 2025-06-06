@@ -46,7 +46,7 @@ def falling_button(ques : Question , buttons : list)->list:
     listOfButton.append(button)
     return listOfButton
 
-def falling_animation(screen, buttons, dt):
+def falling_animation(screen, buttons, dt, Speed = 200):
     if buttons is []:
         pass
     for button in buttons:
@@ -54,7 +54,7 @@ def falling_animation(screen, buttons, dt):
             del button
             continue
         direction = pygame.math.Vector2(0,1)
-        speed = 200
+        speed = Speed
         button.rect.center += speed*dt*direction
         button.draw(screen)
     

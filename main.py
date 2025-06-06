@@ -1,5 +1,5 @@
 import pygame
-from background import falling_button, falling_animation, draw_defeat, draw_label, draw_background, draw_score, menu_button
+from front import falling_button, falling_animation, draw_defeat, draw_label, draw_background, draw_score, menu_button
 from datahandle import Question
 
 
@@ -78,11 +78,6 @@ while run:
         continue
     
     '''GAME SCREEN'''
-
-
-    """DRAW THE BACKGROUND FIRST SO THAT EVERYTHING ELES GETS OVERLAPPED ON TOP OF IT""" 
-    draw_background(screen)
-    
     if (globalTime - blocksTime) >= cooldownTimer:
         blocksTime = pygame.time.get_ticks()
         buttons = falling_button(q, buttons)
@@ -116,7 +111,8 @@ while run:
     playerPos += direction * speed * dt
     player.center = (round(playerPos.x), round(playerPos.y))
 
-    # we draw  button ->label->player .. so that player is above button and button is behind label
+    # we draw  background->button ->label->player .. so that player is above button and button is behind label
+    draw_background(screen)
     falling_animation(screen,buttons,dt)
     draw_label(screen,q.question)
     pygame.draw.rect(screen,playerColor,player,border_radius = 8)
