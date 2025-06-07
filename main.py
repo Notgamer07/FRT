@@ -45,7 +45,7 @@ current_screen = 'menu'
 blocksTime = 0
 while run:
     globalTime = pygame.time.get_ticks()
-    dt = clock.tick(120) / 1000 #delta time in seconds
+    dt = clock.tick(60) / 1000 #delta time in seconds
     screen.fill('black')
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -126,6 +126,8 @@ while run:
     playerPos += direction * speed * dt
     player.center = (round(playerPos.x), round(playerPos.y))
 
+    buttons[:] = [b for b in buttons if b.rect.top < 600] #deletes button if they below screen
+    
     # we draw  background->button ->label->player .. so that player is above button and button is behind label
     draw_background(screen)
     falling_animation(screen,buttons,dt, speedOfBlock)
