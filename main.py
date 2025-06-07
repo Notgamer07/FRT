@@ -1,6 +1,7 @@
 import pygame
 from front import falling_button, falling_animation, draw_defeat, draw_label, draw_background, draw_score, menu_button
 from datahandle import Question
+from audio import *
 import random
 
 def collision(obj, player, button)->bool:
@@ -60,6 +61,7 @@ while run:
             button.draw(screen)
             if button.isClicked():
                 if i == 0:
+                    play_background_music()
                     current_screen = 'game'
                 elif i == 1:
                     current_screen = 'settings'
@@ -101,6 +103,7 @@ while run:
         isCorrect = collision(q,player,button)
         if isCorrect == True:
             score += 1
+            play(sfx="ScoreUp")
             if questionNumber<3:
                 questionNumber += 1
                 q = Question(level,questionNumber)
