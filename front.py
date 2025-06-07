@@ -1,5 +1,5 @@
 import pygame
-from package import Label,Button
+from package import *
 from random import randint
 import random
 from os.path import join, dirname
@@ -42,7 +42,7 @@ def falling_button(ques : Question , buttons : list)->list:
     listOfButton = buttons
     optionText = ques.option[randint(0,3)]
     x_position = randint(0,800 - 80 ) # 800 is Width of the screen
-    button = Button(x_position,-80,(80,80),optionText,color=Colors[randint(0, (len(Colors))-1)],bold=True, autofit=True)
+    button = Block(x_position,-80,(80,80),text=str(optionText),color=Colors[randint(0, (len(Colors))-1)],bold=True)
     listOfButton.append(button)
     return listOfButton
 
@@ -50,12 +50,8 @@ def falling_animation(screen, buttons, dt, Speed = 200):
     if buttons is []:
         pass
     for button in buttons:
-        if button.rect.top >= 600:
-            del button
-            continue
-        direction = pygame.math.Vector2(0,1)
         speed = Speed
-        button.rect.center += speed*dt*direction
+        button.move(dy=speed*dt)
         button.draw(screen)
     
         
