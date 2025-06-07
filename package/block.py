@@ -1,70 +1,55 @@
 import pygame
 
 class Block:
-    def __init__(self,x,y,dimension,text,color=None,text_color=(0,0,0),
-                font=('Arial',40),bold=False,borderRadius=8, autofit = False):
+    def __init__(self, x, y, size, text, color=(200, 200, 200), text_color=(0, 0, 0), font_name='Arial', bold=False):
         pygame.font.init()
-        self.x = x
-        self.y = y
-        self.width, self.height = dimension
-        self.rect = pygame.Rect(x, y, self.width, self.height)
+        self.rect = pygame.Rect(x, y, *size)  # size = (width, height)
         self.text = text
-        self.fontType, self.fontSize = font
-        self.textColor = text_color
-        self.font = pygame.font.SysFont(self.fontType, self.fontSize)
         self.color = color
-        self.autofit = autofit
-        self.bold = bold 
-        self.borderRadius = borderRadius
+        self.text_color = text_color
+        self.font_name = font_name
+        self.bold = bold
+        self._text_surf = None
+        self._text_rect = None
+        self._font_size = None
+        self._needs_update = True  # Mark when we need to re-render
 
-    def config(self,x=None,y=None,dimension=None,text=None,color=None,text_color=None,
-               font=None,borderRadius=False, autofit = None, bold=None):
-        if x is not None or y is not None:
-            assert ( x is not None and y is not None), 'Only x-axis position value was given, Need both'
-            self.x = x
-            self.y = y
-            self.rect = pygame.Rect(x, y, self.width, self.height)
-        if dimension is not None: 
-            assert (len(dimension) == 2), "Only Width value was give, Missing Height value also or Too many values was giveb"
-            self.width, self.height = dimension
-            self.rect = pygame.Rect(x, y, self.width, self.height)
-        if text is not None:
-            self.text = text
-        if text_color is not None:
-            self.textColor = text_color
-        if font is not None:
-           self.fontType, self.fontSize = font
-           self.font = pygame.font.SysFont(self.fontType, self.fontSize, bold=bold)
-        if (color is not None):
-            self.color = color
-        if borderRadius is not False:
-            self.borderRadius = borderRadius
-        if autofit is not None:
-            self.autofit = autofit
-        if bold is not None:
-            self.bold = bold            
-    
-    def draw(self,screen):
-        pygame.draw.rect(screen,self.color,self.rect,border_radius=self.borderRadius)
-        if self.autofit:
-            # Dynamically scale font to fit
-            max_width = self.rect.width - 10  # 5px padding on each side
-            max_height = self.rect.height - 10
-            font_size = self.fontSize
+    def _render_text(self):
+        """Generate the font surface only when needed (with autofit + padding)."""
+        if not self._needs_update:
+            return
 
-            # Try decreasing font size until it fits
-            while font_size > 5:
-                font = pygame.font.SysFont(self.fontType, font_size,bold=self.bold)
-                text_surf = font.render(self.text, True, self.textColor)
-                if text_surf.get_width() <= max_width and text_surf.get_height() <= max_height:
-                    break
-                font_size -= 1
+        max_width = self.rect.width - 20  # 10px horizontal padding both sides
+        max_height = self.rect.height - 20  # 10px vertical padding both sides
+        font_size = min(max_width, max_height)
 
-            # Center and draw the text
-            text_rect = text_surf.get_rect(center=self.rect.center)
+        while font_size > 5:
+            font = pygame.font.SysFont(self.font_name, font_size, bold=self.bold)
+            text_surf = font.render(self.text, True, self.text_color)
+            if text_surf.get_width() <= max_width and text_surf.get_height() <= max_height:
+                self._text_surf = text_surf
+                self._text_rect = text_surf.get_rect(center=self.rect.center)
+                self._font_size = font_size
+                self._needs_update = False
+                return
+            font_size -= 1
 
-        elif self.autofit == False:
-            text_surf = self.font.render(self.text, True, self.textColor)
-            text_rect = text_surf.get_rect(center=self.rect.center)
-        screen.blit(text_surf, text_rect)
-    
+        # fallback
+        self._text_surf = pygame.font.SysFont(self.font_name, 10).render(self.text, True, self.text_color)
+        self._text_rect = self._text_surf.get_rect(center=self.rect.center)
+
+    def draw(self, screen):
+        self._render_text()
+        pygame.draw.rect(screen, self.color, self.rect, border_radius=8)
+        screen.blit(self._text_surf, self._text_rect)
+
+    def move(self, dx=0, dy=0):
+        """Move block and update text position"""
+        self.rect.move_ip(dx, dy)
+        if self._text_rect:
+            self._text_rect.move_ip(dx, dy)
+
+    # def set_pos(self, x, y):
+    #     """Set position and mark text for re-alignment"""
+    #     self.rect.topleft = (x, y)
+    #     self._needs_update = True
