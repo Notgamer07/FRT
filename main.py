@@ -31,8 +31,8 @@ speed = 400
 direction = pygame.math.Vector2(0,0)
 
 score = 0
-level = 2
-questionNumber = 2
+level = 1
+questionNumber = 1
 
 q = Question(level,questionNumber)
 buttons = []
