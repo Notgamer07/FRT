@@ -43,6 +43,7 @@ run = True
 clock = pygame.time.Clock()
 current_screen = 'menu'
 blocksTime = 0
+speedOfBlock = 200
 while run:
     globalTime = pygame.time.get_ticks()
     dt = clock.tick(60) / 1000 #delta time in seconds
@@ -88,9 +89,7 @@ while run:
         cooldownTimer += random.randint(0,5)*50  #adding 0.0 to 0.5s randomness in summoning falling blocks
 
     # Speed of Falling Blocks
-    if level < 3 :
-        speedOfBlock = 200
-    elif level < 6 and speedOfBlock != 240:
+    if level>=3 and level < 6 and speedOfBlock != 240:
         speedOfBlock = 240
     elif level < 9 and level >= 6 and speedOfBlock != 290:
         speedOfBlock = 290
@@ -107,9 +106,8 @@ while run:
                 q = Question(level,questionNumber)
                 buttons.remove(button)
             elif level < 10:
-                questionNumber = 1
                 level += 1
-                questionNumber += 1
+                questionNumber = 1
                 q = Question(level,questionNumber)
                 buttons.remove(button)
         elif isCorrect == False:
