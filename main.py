@@ -57,7 +57,7 @@ blocksTime = 0
 speedOfBlock = 200
 while run:
     globalTime = pygame.time.get_ticks()
-    dt = clock.tick(60) / 1000 #delta time in seconds
+    dt = clock.tick(120) / 1000 #delta time in seconds
     screen.fill('black')
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -71,7 +71,6 @@ while run:
             button.draw(screen)
             if button.isClicked():
                 if i == 0:
-                    play_background_music()
                     current_screen = 'game'
                 elif i == 1:
                     current_screen = 'settings'
@@ -86,6 +85,7 @@ while run:
         current_screen=draw_defeat(screen)
         if current_screen == 'game':
             level, questionNumber = 1,1
+            lifes = 3
             q = Question(level, questionNumber)
             buttons = []
         continue
@@ -96,7 +96,9 @@ while run:
     if (globalTime - blocksTime) >= cooldownTimer:
         blocksTime = pygame.time.get_ticks()
         buttons = falling_button(q, buttons)
-        if cooldownTimer >= 1200:
+        if level > 7 and cooldownTimer >= 800:
+             cooldownTimer = 1200 
+        elif cooldownTimer >= 1200:
             cooldownTimer = 2000 - (level + questionNumber) * 100
         cooldownTimer += random.randint(0,5)*50  #adding 0.0 to 0.5s randomness in summoning falling blocks
 
@@ -117,6 +119,7 @@ while run:
             break
         elif result is False:
             collidedButton = [button, False]
+            break
     if collidedButton[0] is not None:
         if collidedButton[1] == True:
             score += 1
