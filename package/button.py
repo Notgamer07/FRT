@@ -6,7 +6,7 @@ class Button:
         self.x = x
         self.y = y
         self.width, self.height = dimension
-        self.rect = pygame.Rect(x, y, self.width, self.height)
+        self.rect = pygame.FRect(x, y, self.width, self.height)
         self.text = text
         self.fontType, self.fontSize = font
         self.textColor = text_color
@@ -84,11 +84,11 @@ class Button:
                 font_size -= 1
 
             # Center and draw the text
-            text_rect = text_surf.get_rect(center=self.rect.center)
+            text_rect = text_surf.get_frect(center=self.rect.center)
 
         elif self.autofit == False:
             text_surf = self.font.render(self.text, True, self.textColor)
-            text_rect = text_surf.get_rect(center=self.rect.center)
+            text_rect = text_surf.get_frect(center=self.rect.center)
         screen.blit(text_surf, text_rect)
     
     def isClicked(self)->bool:
