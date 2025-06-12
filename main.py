@@ -3,6 +3,8 @@ from front import falling_button, falling_animation, draw_defeat, draw_label, dr
 from datahandle import Question
 from audio import *
 import random
+from os.path import dirname, join
+from package import Button
 
 def collision(obj, player, button)->bool:
     if player.colliderect(button.rect):
@@ -12,6 +14,10 @@ def collision(obj, player, button)->bool:
             return False
     return None
 
+def heart(lifes):
+    for i in range(lifes):
+        health_rect.center = (WIDTH-50-i*22, 20)
+        screen.blit(health, health_rect)
 
 pygame.init()
 
@@ -26,6 +32,10 @@ playerColor = (255,255,255) #white
 player = pygame.Rect(WIDTH//2,HEIGHT,playerWidth,playerHeight)
 player.center = (WIDTH//2, HEIGHT-(playerHeight//2)- 4 ) # -4 is the padding of the player from the bottom
 playerPos = pygame.math.Vector2(player.center)
+
+health = pygame.image.load(join(dirname(__file__), "img", "red-heart.png")).convert_alpha()
+health_rect = health.get_rect()
+lifes = 3
 
 '''TO HANDLE PLAYER MOVEMENT'''
 speed = 400
@@ -98,25 +108,33 @@ while run:
     elif level <=10 and level >= 9 and speedOfBlock != 350:
         speedOfBlock = 350
 
-    # Player Movement
-    for button in buttons:
-        isCorrect = collision(q,player,button)
-        if isCorrect == True:
+    """Collision"""
+    collidedButton : list[Button, bool] =[None, None]
+    for button in buttons[:]:
+        result = collision(q, player, button)
+        if result is True:
+            collidedButton = [button, True]
+            break
+        elif result is False:
+            collidedButton = [button, False]
+    if collidedButton[0] is not None:
+        if collidedButton[1] == True:
             score += 1
             play(sfx="ScoreUp")
-            if questionNumber<3:
+            if questionNumber < 3:
                 questionNumber += 1
-                q = Question(level,questionNumber)
-                buttons.remove(button)
+                q = Question(level, questionNumber)
             elif level < 10:
                 level += 1
                 questionNumber = 1
                 q = Question(level,questionNumber)
-                buttons.remove(button)
-        elif isCorrect == False:
-            current_screen = 'defeat'
-            continue
+        elif collidedButton[1] == False:
+            lifes -= 1
+            if lifes == 0:
+                current_screen = 'defeat'
+        buttons.remove(collidedButton[0])
 
+        # Player Movement
     direction = pygame.math.Vector2(0, 0)
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] and player.right >= 0: #Pressing Left and player isn't out of bounds of left screen
@@ -135,6 +153,7 @@ while run:
     draw_label(screen,q.question)
     pygame.draw.rect(screen,playerColor,player,border_radius = 8)
     draw_score(screen,score)
+    heart(lifes)
 
     pygame.display.flip()
 pygame.quit()
