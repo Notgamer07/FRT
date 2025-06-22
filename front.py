@@ -5,14 +5,16 @@ import random
 from os.path import join, dirname
 from datahandle import Question
 
+__all__ = ['falling_button', 'falling_animation', 'draw_defeat', 'draw_label', 'draw_background', 'draw_score', 'menu_button', 'draw_victory']
+
 defeat_img = pygame.image.load(join(dirname(__file__),'img','defeated.png'))
 defeat_img = pygame.transform.scale(defeat_img, (550,100))
 defeat_rect = defeat_img.get_rect()
 defeat_rect.center = (400,300)
 defeat_img.set_colorkey((255,255,255))
 
-Colors= [(255, 87, 87), (177, 90, 255), (50, 205, 50), (255, 223, 0), (255, 20, 147)]
-random.shuffle(Colors)
+COLOR= [(255, 87, 87), (177, 90, 255), (50, 205, 50), (255, 223, 0), (255, 20, 147)]
+random.shuffle(COLOR)
 
 star_img = pygame.image.load(join(dirname(__file__),'img','star.png'))
 
@@ -42,7 +44,7 @@ def falling_button(ques : Question , buttons : list)->list:
     listOfButton = buttons
     optionText = ques.option[randint(0,3)]
     x_position = randint(0,800 - 80 ) # 800 is Width of the screen
-    button = Block(x_position,-80,(80,80),text=str(optionText),color=Colors[randint(0, (len(Colors))-1)],bold=True)
+    button = Block(x_position,-80,(80,80),text=str(optionText),color=COLOR[randint(0, (len(COLOR))-1)],bold=True)
     listOfButton.append(button)
     return listOfButton
 
@@ -50,12 +52,11 @@ def falling_animation(screen, buttons, dt, Speed = 200):
     if buttons is []:
         pass
     for button in buttons:
-        speed = Speed
-        button.move(dy=speed*dt)
+        button.move(dy=int(Speed*dt))
         button.draw(screen)
     
         
-def draw_defeat(screen):
+def draw_defeat(screen)->str:
     screen.blit(defeat_img,defeat_rect)
     retry_button = Button(350,400,(100,80),"RETRY",(255, 182, 193),(245, 162, 173),True,autofit=True)
     retry_button.config(bold=True)
@@ -86,3 +87,17 @@ def menu_button():
     settingsButton = Button(300,350,(200,60),"SETTINGS",(100,200,250),(50,150,250),hover=True,autofit=True)
     quitButton = Button(300,450,(200,60),"QUIT",(250,100,100),(255,50,50), hover = True, autofit=True)
     return [startButton, settingsButton, quitButton]
+
+def draw_victory(screen)->str:
+    screen.fill('green')
+    label = Label(400,300,(550,100),"Heh! You Win (For Now)",autofit=True,color=(0,255,0))
+    label.rect.center = (400,300)
+    label.draw(screen)
+    retry_button = Button(350,400,(100,80),"RETRY",(255, 182, 193),(245, 162, 173),True,autofit=True)
+    retry_button.config(bold=True)
+    retry_button.draw(screen)
+    if retry_button.isClicked():
+        return 'game'
+    pygame.display.flip()
+    return 'victory'
+
