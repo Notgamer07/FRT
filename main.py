@@ -1,5 +1,5 @@
 import pygame
-from front import falling_button, falling_animation, draw_defeat, draw_label, draw_background, draw_score, menu_button
+from front import *
 from datahandle import Question
 from audio import *
 import random
@@ -90,9 +90,19 @@ while run:
             buttons = []
         continue
     
+    '''VICTORY SCREEN'''
+    if current_screen == 'victory':
+        current_screen = draw_victory(screen)
+        if current_screen == 'game':
+            level, questionNumber = 1,1
+            lifes = 3
+            q = Question(level, questionNumber)
+            buttons = []
+        continue
+
     '''GAME SCREEN'''
 
-    #Timer to summon Falling Block
+    # Timer to summon Falling Block
     if (globalTime - blocksTime) >= cooldownTimer:
         blocksTime = pygame.time.get_ticks()
         buttons = falling_button(q, buttons)
@@ -131,6 +141,8 @@ while run:
                 level += 1
                 questionNumber = 1
                 q = Question(level,questionNumber)
+            elif level == 10:
+                current_screen = 'victory'
         elif collidedButton[1] == False:
             lifes -= 1
             if lifes == 0:
