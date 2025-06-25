@@ -6,7 +6,7 @@ class Button:
         self.x = x
         self.y = y
         self.width, self.height = dimension
-        self.rect = pygame.FRect(x, y, self.width, self.height)
+        self.rect = pygame.Rect(x, y, self.width, self.height)
         self.text = text
         self.fontType, self.fontSize = font
         self.textColor = text_color
@@ -21,7 +21,8 @@ class Button:
         else:
             self.color = color
         self.autofit = autofit
-        self.bold =bold 
+        self.bold =bold
+        self._was_pressed = False 
 
     def config(self,x=None,y=None,dimension=None,text=None,color=None,hover=None,hoverColor=None,text_color=None,font=None,customFontFilePath = False,customFontSize=False,borderRadius=False, autofit = None, bold=None):
         if x is not None or y is not None:
@@ -93,6 +94,16 @@ class Button:
     
     def isClicked(self)->bool:
         mouse = pygame.mouse.get_pos()
-        if self.rect.collidepoint(mouse) and pygame.mouse.get_pressed()== (True,False,False):
-            return True
+        left_pressed = pygame.mouse.get_pressed()[0]
+
+        if self.rect.collidepoint(mouse):
+            if left_pressed and not self._was_pressed:
+                self._was_pressed = True
+                return True  # Click registered once
+            elif not left_pressed:
+                self._was_pressed = False  # Reset when mouse is released
+        else:
+            if not left_pressed:
+                self._was_pressed = False  # Reset even if mouse moved out
+
         return False
