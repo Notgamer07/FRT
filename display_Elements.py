@@ -3,7 +3,7 @@ from package import *
 from random import randint
 import random
 from os.path import join, dirname
-from datahandle import Question
+from datahandle import Question, save_gameState, get_gameState
 
 __all__ = ['falling_button', 'falling_animation', 'draw_defeat', 
            'draw_label', 'draw_background', 'draw_score', 
@@ -106,8 +106,10 @@ def draw_victory(screen)->str:
 
 class SettingsUI:
     def __init__(self):
-        self.volume_state = True
-        self.music_state = True
+        self.game_state = get_gameState()
+        self.volume_state = bool(self.game_state.get("Sound", 1))
+        self.music_state = bool(self.game_state.get("Music", 1))
+
         self.volumeButton = None
         self.musicButton = None
         self.backButton = None
@@ -115,45 +117,67 @@ class SettingsUI:
     def _create_buttons(self):
         if self.volumeButton is None:
             state = "ON" if self.volume_state else "OFF"
-            self.volumeButton = Button(200, 100, (50, 50), state, (80, 80, 80), text_color=(0, 200, 0), bold=True, autofit=True)
+            textColor=(0, 200, 0) if self.volume_state else (200, 0, 0)
+            Color=(80, 80, 80) if self.volume_state else (180, 180, 180)
+            self.volumeButton = Button(200, 100, (50, 50), state, color=Color,
+                                       text_color=textColor, bold=True, autofit=True)
             self.volumeButton.rect.center = (500, 100)
+
         if self.musicButton is None:
             state = "ON" if self.music_state else "OFF"
-            self.musicButton = Button(200, 100, (50, 50), state, (80, 80, 80), text_color=(0, 200, 0), bold=True, autofit=True)
+            textColor=(0, 200, 0) if self.music_state else (200, 0, 0),
+            Color=(80, 80, 80) if self.music_state else (180, 180, 180)
+            self.musicButton = Button(200, 100, (50, 50), state, color=Color,
+                                      text_color=textColor, bold=True, autofit=True)
             self.musicButton.rect.center = (500, 200)
+
         if self.backButton is None:
-            self.backButton = Button(200, 60, (140, 50), "BACK", (60, 60, 60), text_color=(255, 255, 255),hover=True,hoverColor=(90,90,90), bold=True)
+            self.backButton = Button(200, 60, (100, 40), "BACK", (60, 60, 60),
+                                     text_color=(255, 255, 255), bold=True)
             self.backButton.rect.center = (400, 320)
 
     def draw(self, screen):
         self._create_buttons()
 
-        # Draw labels
-        font = pygame.font.SysFont('Arial', 50, bold=True)  # Default font, size 36
-        sound_text = font.render("SOUND EFFECT", True, (255, 255, 255))  # White text
-        music_text = font.render("MUSIC ", True, (255, 255, 255))        # White text
-        screen.blit(sound_text, (110, 70))  # X, Y position
-        screen.blit(music_text, (290, 170))
-        # Draw and update buttons
+        # Draw labels (no Label class)
+        font = pygame.font.SysFont(None, 36, bold=True)
+        sound_label = font.render("SOUND EFFECT:", True, (255, 255, 255))
+        music_label = font.render("MUSIC:", True, (255, 255, 255))
+
+        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(95, 65, 310, 70))
+        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(95, 165, 170, 70))
+
+        screen.blit(sound_label, (110, 85))
+        screen.blit(music_label, (110, 185))
+
         self.volumeButton.draw(screen)
         self.musicButton.draw(screen)
         self.backButton.draw(screen)
 
+        # Volume Toggle
         if self.volumeButton.isClicked():
             self.volume_state = not self.volume_state
             self.volumeButton.config(
-                text="OFF" if not self.volume_state else "ON",
-                text_color=(200, 0, 0) if not self.volume_state else (0, 200, 0),
-                color=(180, 180, 180) if not self.volume_state else (80, 80, 80)
+                text="ON" if self.volume_state else "OFF",
+                text_color=(0, 200, 0) if self.volume_state else (200, 0, 0),
+                color=(80, 80, 80) if self.volume_state else (180, 180, 180)
             )
+            self._update_game_state("Sound", int(self.volume_state))
 
+        # Music Toggle
         if self.musicButton.isClicked():
             self.music_state = not self.music_state
             self.musicButton.config(
-                text="OFF" if not self.music_state else "ON",
-                text_color=(200, 0, 0) if not self.music_state else (0, 200, 0),
-                color=(180, 180, 180) if not self.music_state else (80, 80, 80)
+                text="ON" if self.music_state else "OFF",
+                text_color=(0, 200, 0) if self.music_state else (200, 0, 0),
+                color=(80, 80, 80) if self.music_state else (180, 180, 180)
             )
+            self._update_game_state("Music", int(self.music_state))
+
+    def _update_game_state(self, key, value):
+        self.game_state[key] = value
+        save_gameState(self.game_state)
+
     def back_pressed(self):
         return self.backButton and self.backButton.isClicked()
-
+    

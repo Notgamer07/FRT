@@ -3,6 +3,15 @@ import json
 with open('data.json','r')as f:
     data = json.load(f)
 
+def get_gameState()->dict:
+    with open('settings.json','r') as f:
+        game_state = json.load(f)
+    return game_state
+
+def save_gameState(data):
+    with open('settings.json','w') as f:
+        json.dump(data, f, indent= 4)
+
 def read_question(level, question_mo):
     questions = []
     for ques in data["levels"]:
@@ -28,5 +37,8 @@ class Question:
         return questions[0]
 
 if __name__ == "__main__":
-    q = Question(1,1)
-    print(q.currect)
+    lol = get_gameState()
+    print(lol)
+    lol['Sound'] = 0
+    save_gameState(lol)
+    print(get_gameState())

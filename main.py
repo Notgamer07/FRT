@@ -72,6 +72,7 @@ while run:
             if button.isClicked():
                 if i == 0:
                     current_screen = 'game'
+                    update_state()
                 elif i == 1:
                     current_screen = 'settings'
                     settings = SettingsUI()
@@ -100,6 +101,7 @@ while run:
     if current_screen == 'defeat':
         current_screen=draw_defeat(screen)
         if current_screen == 'game':
+            update_state()
             level, questionNumber = 1,1
             lifes = 3
             q = Question(level, questionNumber)
@@ -110,6 +112,7 @@ while run:
     if current_screen == 'victory':
         current_screen = draw_victory(screen)
         if current_screen == 'game':
+            update_state()
             level, questionNumber = 1,1
             lifes = 3
             q = Question(level, questionNumber)
