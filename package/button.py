@@ -93,17 +93,18 @@ class Button:
         screen.blit(text_surf, text_rect)
     
     def isClicked(self)->bool:
-        mouse = pygame.mouse.get_pos()
-        left_pressed = pygame.mouse.get_pressed()[0]
-
-        if self.rect.collidepoint(mouse):
-            if left_pressed and not self._was_pressed:
+        mouse_pos = pygame.mouse.get_pos()
+        mouse_pressed = pygame.mouse.get_pressed()[0]
+    
+        # Track if mouse was pressed while over the button
+        if self.rect.collidepoint(mouse_pos):
+            if mouse_pressed:
                 self._was_pressed = True
-                return True  # Click registered once
-            elif not left_pressed:
-                self._was_pressed = False  # Reset when mouse is released
+            elif self._was_pressed:
+                self._was_pressed = False
+                return True  # Rising edge: released over the button
         else:
-            if not left_pressed:
-                self._was_pressed = False  # Reset even if mouse moved out
-
+            if not mouse_pressed:
+                self._was_pressed = False  # Reset if mouse is up anywhere else
+    
         return False
