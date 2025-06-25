@@ -1,5 +1,5 @@
 import pygame
-from front import *
+from display_Elements import *
 from datahandle import Question
 from audio import *
 import random
@@ -74,12 +74,28 @@ while run:
                     current_screen = 'game'
                 elif i == 1:
                     current_screen = 'settings'
+                    settings = SettingsUI()
                 else:
                     run = False
 
 
         pygame.display.flip()
         continue
+
+    '''SETTING SCREEN'''
+    if current_screen == 'settings':
+        draw_background(screen)
+        settings.draw(screen)
+        if settings.back_pressed():
+            current_screen = 'menu'
+            i=0
+            # Wait for mouse release before accepting more input
+        while pygame.mouse.get_pressed()[0]:  # while left mouse is down
+            pygame.event.pump()  # Keep the event queue alive
+        
+        pygame.display.flip()
+        continue
+
     '''DEFEAT SCREEN'''
     if current_screen == 'defeat':
         current_screen=draw_defeat(screen)
@@ -100,8 +116,9 @@ while run:
             buttons = []
         continue
 
-    '''GAME SCREEN'''
 
+
+    '''GAME SCREEN'''
     # Timer to summon Falling Block
     if (globalTime - blocksTime) >= cooldownTimer:
         blocksTime = pygame.time.get_ticks()
