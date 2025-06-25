@@ -5,7 +5,9 @@ import random
 from os.path import join, dirname
 from datahandle import Question
 
-__all__ = ['falling_button', 'falling_animation', 'draw_defeat', 'draw_label', 'draw_background', 'draw_score', 'menu_button', 'draw_victory']
+__all__ = ['falling_button', 'falling_animation', 'draw_defeat', 
+           'draw_label', 'draw_background', 'draw_score', 
+           'menu_button', 'draw_victory', 'SettingsUI']
 
 defeat_img = pygame.image.load(join(dirname(__file__),'img','defeated.png'))
 defeat_img = pygame.transform.scale(defeat_img, (550,100))
@@ -100,4 +102,58 @@ def draw_victory(screen)->str:
         return 'game'
     pygame.display.flip()
     return 'victory'
+
+
+class SettingsUI:
+    def __init__(self):
+        self.volume_state = True
+        self.music_state = True
+        self.volumeButton = None
+        self.musicButton = None
+        self.backButton = None
+
+    def _create_buttons(self):
+        if self.volumeButton is None:
+            state = "ON" if self.volume_state else "OFF"
+            self.volumeButton = Button(200, 100, (50, 50), state, (80, 80, 80), text_color=(0, 200, 0), bold=True, autofit=True)
+            self.volumeButton.rect.center = (500, 100)
+        if self.musicButton is None:
+            state = "ON" if self.music_state else "OFF"
+            self.musicButton = Button(200, 100, (50, 50), state, (80, 80, 80), text_color=(0, 200, 0), bold=True, autofit=True)
+            self.musicButton.rect.center = (500, 200)
+        if self.backButton is None:
+            self.backButton = Button(200, 60, (140, 50), "BACK", (60, 60, 60), text_color=(255, 255, 255),hover=True,hoverColor=(90,90,90), bold=True)
+            self.backButton.rect.center = (400, 320)
+
+    def draw(self, screen):
+        self._create_buttons()
+
+        # Draw labels
+        font = pygame.font.SysFont('Arial', 50, bold=True)  # Default font, size 36
+        sound_text = font.render("SOUND EFFECT", True, (255, 255, 255))  # White text
+        music_text = font.render("MUSIC ", True, (255, 255, 255))        # White text
+        screen.blit(sound_text, (110, 70))  # X, Y position
+        screen.blit(music_text, (290, 170))
+        # Draw and update buttons
+        self.volumeButton.draw(screen)
+        self.musicButton.draw(screen)
+        self.backButton.draw(screen)
+
+        if self.volumeButton.isClicked():
+            self.volume_state = not self.volume_state
+            self.volumeButton.config(
+                text="OFF" if not self.volume_state else "ON",
+                text_color=(200, 0, 0) if not self.volume_state else (0, 200, 0),
+                color=(180, 180, 180) if not self.volume_state else (80, 80, 80)
+            )
+
+        if self.musicButton.isClicked():
+            self.music_state = not self.music_state
+            self.musicButton.config(
+                text="OFF" if not self.music_state else "ON",
+                text_color=(200, 0, 0) if not self.music_state else (0, 200, 0),
+                color=(180, 180, 180) if not self.music_state else (80, 80, 80)
+            )
+    def back_pressed(self):
+        return self.backButton and self.backButton.isClicked()
 
