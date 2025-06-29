@@ -42,8 +42,8 @@ speed = 400
 direction = pygame.math.Vector2(0,0)
 
 score = 0
-level = 1
-questionNumber = 1
+level = 10
+questionNumber = 2
 
 q = Question(level,questionNumber)
 buttons = []
@@ -89,11 +89,6 @@ while run:
         settings.draw(screen)
         if settings.back_pressed():
             current_screen = 'menu'
-            i=0
-            # Wait for mouse release before accepting more input
-        while pygame.mouse.get_pressed()[0]:  # while left mouse is down
-            pygame.event.pump()  # Keep the event queue alive
-        
         pygame.display.flip()
         continue
 
@@ -110,7 +105,8 @@ while run:
     
     '''VICTORY SCREEN'''
     if current_screen == 'victory':
-        current_screen = draw_victory(screen)
+        draw_background(screen)
+        current_screen = draw_victory(screen, score)
         if current_screen == 'game':
             update_state()
             level, questionNumber = 1,1

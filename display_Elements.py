@@ -15,6 +15,12 @@ defeat_rect = defeat_img.get_rect()
 defeat_rect.center = (400,300)
 defeat_img.set_colorkey((255,255,255))
 
+victory_img = pygame.image.load(join(dirname(__file__),"img","VICTORY.png"))
+victory_img = pygame.transform.scale(victory_img,(550,100))
+victory_rect = victory_img.get_rect()
+victory_rect.center = (400,200)
+victory_img.set_colorkey((255,255,255))
+
 COLOR= [(255, 87, 87), (177, 90, 255), (50, 205, 50), (255, 223, 0), (255, 20, 147)]
 random.shuffle(COLOR)
 
@@ -90,19 +96,19 @@ def menu_button():
     quitButton = Button(300,450,(200,60),"QUIT",(250,100,100),(255,50,50), hover = True, autofit=True)
     return [startButton, settingsButton, quitButton]
 
-def draw_victory(screen)->str:
-    screen.fill('green')
-    label = Label(400,300,(550,100),"Heh! You Win (For Now)",autofit=True,color=(0,255,0))
-    label.rect.center = (400,300)
-    label.draw(screen)
+def draw_victory(screen, score : int)->str:
+    screen.blit(victory_img,victory_rect)
     retry_button = Button(350,400,(100,80),"RETRY",(255, 182, 193),(245, 162, 173),True,autofit=True)
     retry_button.config(bold=True)
     retry_button.draw(screen)
     if retry_button.isClicked():
         return 'game'
-    pygame.display.flip()
-    return 'victory'
+    font = pygame.font.SysFont(None, 36, bold=True)
+    scoreLabel = font.render(f"SCORE :{score}", True, (255,255,255))
+    screen.blit(scoreLabel, (400, 300))
 
+    pygame.display.update()
+    return 'victory'
 
 class SettingsUI:
     def __init__(self):
