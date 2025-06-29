@@ -1,5 +1,4 @@
 import json
-
 with open('data.json','r')as f:
     data = json.load(f)
 
@@ -24,11 +23,11 @@ class Question:
         data = read_question(level,questionNumber)
         self.question = data['question'] # returns a string like "What is 2 + 3 ?"
         self.option = data['options'] # returns a list of strings like ["4","5","6","7"]
-        self.currect = data['correct_answer']# returns currect string from option like "5"
+        self.correct = data['correct_answer']# returns currect string from option like "5"
         self.quesNumber = questionNumber
         self.level = level
     
-    @classmethod
+    @staticmethod
     def read_question(level, question_mo):
         questions = []
         for ques in data["levels"]:

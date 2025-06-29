@@ -8,7 +8,7 @@ from package import Button
 
 def collision(obj, player, button)->bool:
     if player.colliderect(button.rect):
-        if obj.currect == button.text:
+        if obj.correct == button.text:
             return True
         else:
             return False
