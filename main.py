@@ -42,8 +42,8 @@ speed = 400
 direction = pygame.math.Vector2(0,0)
 
 score = 0
-level = 10
-questionNumber = 2
+level = 1
+questionNumber = 1
 
 q = Question(level,questionNumber)
 buttons = []
@@ -155,7 +155,7 @@ while run:
                 q = Question(level, questionNumber)
             elif level < 10:
                 level += 1
-                questionNumber = 1
+                # questionNumber = 1
                 q = Question(level,questionNumber)
             elif level == 10:
                 current_screen = 'victory'
