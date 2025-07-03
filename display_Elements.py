@@ -1,5 +1,5 @@
 import pygame
-from package import *
+from UI import *
 from random import randint
 import random
 from os.path import join, dirname

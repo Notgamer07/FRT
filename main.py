@@ -4,7 +4,7 @@ from datahandle import Question
 from audio import *
 import random
 from os.path import dirname, join
-from package import Button
+from UI import Button
 
 def collision(obj, player, button)->bool:
     if player.colliderect(button.rect):
