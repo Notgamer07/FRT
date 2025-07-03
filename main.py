@@ -123,7 +123,11 @@ while run:
         blocksTime = pygame.time.get_ticks()
         buttons = falling_button(q, buttons)
         if level > 7 and cooldownTimer >= 800:
-             cooldownTimer = 1200 
+             cooldownTimer = 400
+        elif level > 3 and cooldownTimer >= 1000:
+            cooldownTimer =  800
+        elif level >= 9 and cooldownTimer >= 350:
+            cooldownTimer = 200 
         elif cooldownTimer >= 1200:
             cooldownTimer = 2000 - (level + questionNumber) * 100
         cooldownTimer += random.randint(0,5)*50  #adding 0.0 to 0.5s randomness in summoning falling blocks
@@ -155,7 +159,7 @@ while run:
                 q = Question(level, questionNumber)
             elif level < 10:
                 level += 1
-                # questionNumber = 1
+                questionNumber = 1
                 q = Question(level,questionNumber)
             elif level == 10:
                 current_screen = 'victory'
