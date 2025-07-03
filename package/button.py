@@ -95,16 +95,14 @@ class Button:
     def isClicked(self)->bool:
         mouse_pos = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()[0]
+        action = False
     
         # Track if mouse was pressed while over the button
-        if self.rect.collidepoint(mouse_pos):
-            if mouse_pressed:
+        if self.rect.collidepoint(mouse_pos) and mouse_pressed:
+            if not self._was_pressed:
+                action = True
                 self._was_pressed = True
-            elif self._was_pressed:
-                self._was_pressed = False
-                return True  # Rising edge: released over the button
-        else:
-            if not mouse_pressed:
-                self._was_pressed = False  # Reset if mouse is up anywhere else
-    
-        return False
+        if not mouse_pressed:
+            self._was_pressed = False
+           
+        return action
