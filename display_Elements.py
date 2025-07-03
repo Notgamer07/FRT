@@ -91,9 +91,9 @@ def draw_score(screen,score):
     screen.blit(text_surf,text_rect)
 
 def menu_button():
-    startButton = Button(300,250,(200,60),"START",(100,200,100),(50,255,50),hover=True,autofit=True)
-    settingsButton = Button(300,350,(200,60),"SETTINGS",(100,200,250),(50,150,250),hover=True,autofit=True)
-    quitButton = Button(300,450,(200,60),"QUIT",(250,100,100),(255,50,50), hover = True, autofit=True)
+    startButton = RaisedButton(300,250,(200,60),"START",(100,200,100),(50,255,50),hover=True,autofit=True, bold=True)
+    settingsButton = RaisedButton(300,350,(200,60),"SETTINGS",(100,200,250),(50,150,250),hover=True,autofit=True)
+    quitButton = RaisedButton(300,450,(200,60),"QUIT",(250,100,100),(255,50,50), hover = True, autofit=True)
     return [startButton, settingsButton, quitButton]
 
 def draw_victory(screen, score : int)->str:
@@ -139,7 +139,7 @@ class SettingsUI:
 
         if self.backButton is None:
             self.backButton = Button(200, 60, (100, 40), "BACK", (60, 60, 60),
-                                     text_color=(255, 255, 255), bold=True)
+                                     text_color=(255, 255, 255), bold=True,autofit=True)
             self.backButton.rect.center = (400, 320)
 
     def draw(self, screen):
