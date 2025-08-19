@@ -48,21 +48,24 @@ def draw_background(screen):
         screen.blit(star_frames[frame_no[i]],star_pos[i])
 
 
-def falling_button(ques : Question , buttons : list)->list:
-    listOfButton = buttons
-    optionText = ques.option[randint(0,3)]
-    x_position = randint(0,800 - 80 ) # 800 is Width of the screen
-    button = Block(x_position,-80,(80,80),text=str(optionText),color=COLOR[randint(0, (len(COLOR))-1)],bold=True)
-    listOfButton.append(button)
-    return listOfButton
+def falling_button(ques: Question, block_group: pygame.sprite.Group) -> pygame.sprite.Group:
+    optionText = ques.option[randint(0, 3)]
+    x_position = randint(0, 800 - 80)  # screen width - block width
+    button = Block(
+        x_position, 
+        -80, 
+        (80, 80),
+        text=str(optionText),
+        color=COLOR[randint(0, len(COLOR) - 1)],
+        bold=True
+    )
+    block_group.add(button)
+    return block_group
 
-def falling_animation(screen, buttons, dt, Speed = 200):
-    if buttons is []:
-        pass
+def falling_animation(screen, buttons, dt, Speed=200):
     for button in buttons:
-        button.move(dy=int(Speed*dt))
-        button.draw(screen)
-    
+        button.fall(Speed * dt)  # smooth float-based movement
+        button.draw(screen)    
         
 def draw_defeat(screen)->str:
     screen.blit(defeat_img,defeat_rect)

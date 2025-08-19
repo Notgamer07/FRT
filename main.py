@@ -6,6 +6,7 @@ import random
 from os.path import dirname, join
 from UI import Button
 
+
 def collision(obj, player, button)->bool:
     if player.colliderect(button.rect):
         if obj.correct == button.text:
@@ -55,14 +56,13 @@ clock = pygame.time.Clock()
 current_screen = 'menu'
 blocksTime = 0
 speedOfBlock = 200
+all_block = pygame.sprite.Group()
 while run:
     globalTime = pygame.time.get_ticks()
-    dt = clock.tick(120) / 1000 #delta time in seconds
-    screen.fill('black')
+    dt = clock.tick(60) / 1000 #delta time in seconds
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-
     '''MENU SCREEN'''
     if current_screen == 'menu':
         cooldownTimer = 2000 #2 secons
@@ -121,7 +121,7 @@ while run:
     # Timer to summon Falling Block
     if (globalTime - blocksTime) >= cooldownTimer:
         blocksTime = pygame.time.get_ticks()
-        buttons = falling_button(q, buttons)
+        all_block = falling_button(q, all_block)
         if level > 7 and cooldownTimer >= 800:
              cooldownTimer = 400
         elif level > 3 and cooldownTimer >= 1000:
@@ -180,15 +180,19 @@ while run:
     playerPos += direction * speed * dt
     player.center = (round(playerPos.x), round(playerPos.y))
 
-    buttons[:] = [b for b in buttons if b.rect.top < 600] #deletes button if they below screen
-    
+    for block in all_block.copy():  # iterate over a copy
+        if block.rect.top > 600:  # if screen height = 600
+            all_block.remove(block)
+
     # we draw  background->button ->label->player .. so that player is above button and button is behind label
+    screen.fill((0,0,0))
     draw_background(screen)
-    falling_animation(screen,buttons,dt, speedOfBlock)
+    all_block.update(dt, speed)
+    # Draw all blocks
+    all_block.draw(screen)
     draw_label(screen,q.question)
     pygame.draw.rect(screen,playerColor,player,border_radius = 8)
     draw_score(screen,score)
     heart(lifes)
-
     pygame.display.flip()
 pygame.quit()
