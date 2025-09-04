@@ -77,12 +77,16 @@ def draw_defeat(screen)->str:
     pygame.display.update()
     return 'defeat'
 
-def draw_label(screen,question):
-    label = Label(0,0,(450,40),question,(0,0,0),(177, 90, 255),('Arial',40),True,autofit=True)
-    label.rect.center = (400,70)
-    padding = 4 # padding in pixels
-    rect = pygame.Rect(label.rect.left-padding,label.rect.top-padding, label.rect.width+(2*padding),label.rect.height+(2*padding))
-    pygame.draw.rect(screen,(255,255,255),rect)
+def draw_label(screen, label):
+    # draw white border with padding
+    padding = 4
+    rect = pygame.Rect(
+        label.rect.left - padding,
+        label.rect.top - padding,
+        label.rect.width + (2*padding),
+        label.rect.height + (2*padding)
+    )
+    pygame.draw.rect(screen, (255,255,255), rect)
     label.draw(screen)
 
 def draw_score(screen,score):

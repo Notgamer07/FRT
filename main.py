@@ -4,7 +4,7 @@ from datahandle import Question
 from audio import *
 import random
 from os.path import dirname, join
-from UI import Button
+from UI import Block, Label
 
 
 def collision(obj, player, button)->bool:
@@ -47,6 +47,13 @@ level = 1
 questionNumber = 1
 
 q = Question(level,questionNumber)
+label = Label(
+        0, 0, (450, 40), q.question,
+        color=(0,0,0), text_color=(177, 90, 255),
+        font=('Arial', 40), bold=True,
+        autofit=True
+    )
+label.rect.center = (400,70)
 buttons = []
 
 menuButtons = menu_button()
@@ -141,8 +148,8 @@ while run:
         speedOfBlock = 350
 
     """Collision"""
-    collidedButton : list[Button, bool] =[None, None]
-    for button in buttons[:]:
+    collidedButton : list[Block, bool] =[None, None]
+    for button in all_block:
         result = collision(q, player, button)
         if result is True:
             collidedButton = [button, True]
@@ -167,7 +174,7 @@ while run:
             lifes -= 1
             if lifes == 0:
                 current_screen = 'defeat'
-        buttons.remove(collidedButton[0])
+        all_block.remove(button)
 
         # Player Movement
     direction = pygame.math.Vector2(0, 0)
@@ -187,10 +194,10 @@ while run:
     # we draw  background->button ->label->player .. so that player is above button and button is behind label
     screen.fill((0,0,0))
     draw_background(screen)
-    all_block.update(dt, speed)
+    all_block.update(dt, speedOfBlock)
     # Draw all blocks
     all_block.draw(screen)
-    draw_label(screen,q.question)
+    draw_label(screen,label)
     pygame.draw.rect(screen,playerColor,player,border_radius = 8)
     draw_score(screen,score)
     heart(lifes)
