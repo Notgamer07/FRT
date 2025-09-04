@@ -34,10 +34,3 @@ class Question:
             if ques["level"] == level:
                 questions.append(ques["questions"][question_mo-1])
         return questions[0]
-
-if __name__ == "__main__":
-    lol = get_gameState()
-    print(lol)
-    lol['Sound'] = 0
-    save_gameState(lol)
-    print(get_gameState())
