@@ -40,6 +40,21 @@ level_iter = iter(data)
 current_level = next(level_iter)
 question_iter = iter(current_level["questions"])
 
+#This will create the menu buttons and return them in a list of buttons
+def menu_button()->list[RaisedButton]:
+    startButton = RaisedButton(300,250,(200,60),"START",(100,200,100),(50,255,50),hover=True,autofit=True, bold=True)
+    settingsButton = RaisedButton(300,350,(200,60),"SETTINGS",(100,200,250),(50,150,250),hover=True,autofit=True)
+    quitButton = RaisedButton(300,450,(200,60),"QUIT",(250,100,100),(255,50,50), hover = True, autofit=True)
+    return [startButton, settingsButton, quitButton]
+
+def draw_score(screen,score):
+    gm_score = f'SCORE : {score}'
+    font = pygame.font.SysFont('Arial',20,True,False) #Arial Bold font of size 20
+    text_surf = font.render(gm_score,True,'white',wraplength= 0)
+    text_rect = text_surf.get_rect()
+    text_rect.topleft = (5,5)
+    screen.blit(text_surf,text_rect)
+
 def draw_heart(lifes):
     for i in range(lifes):
         health_rect.center = (WIDTH-50-i*22, 20)
@@ -58,6 +73,9 @@ def draw_label(screen, label):
     label.draw(screen)
 
 def next_question():
+    '''To use this function, call this function
+    in 'ques' like ques = next_question() and change 
+    displayQuestion variable too!! like displayQuestion = ques['question']'''
     global current_level, question_iter, level_iter
 
     try:
@@ -71,6 +89,11 @@ def next_question():
         except StopIteration:
             return None  # no more questions at all
 
+def draw_background(screen):
+    for i in range(20):
+        screen.blit(star_frames[frame_no[i]],star_pos[i])
+
+
 ques = next_question()
 DisplayQuestion = ques['question']
 label = Label(
@@ -81,13 +104,6 @@ label = Label(
     )
 label.rect.center = (400,70)
 
-#This will create the menu buttons and return them in a list of buttons
-def menu_button()->list[RaisedButton]:
-    startButton = RaisedButton(300,250,(200,60),"START",(100,200,100),(50,255,50),hover=True,autofit=True, bold=True)
-    settingsButton = RaisedButton(300,350,(200,60),"SETTINGS",(100,200,250),(50,150,250),hover=True,autofit=True)
-    quitButton = RaisedButton(300,450,(200,60),"QUIT",(250,100,100),(255,50,50), hover = True, autofit=True)
-    return [startButton, settingsButton, quitButton]
-
 
 def spawn_block(group: pygame.sprite.Group):
     global ques
@@ -95,7 +111,6 @@ def spawn_block(group: pygame.sprite.Group):
     x_pos = randint(0, WIDTH - 80)
     b = Block(x_pos, -80, (80, 80), text=choice(options), color=COLOR[randint(0,len(COLOR)-1)], bold=True)
     group.add(b)
-
 
 
 pygame.init()
@@ -123,31 +138,27 @@ time_changed = 0
 
 current_screen = "Menu"
 
+# --- Loading Star img for the background ---
 star_img = pygame.image.load(os.path.join(os.path.dirname(__file__),'img','star.png')).convert_alpha()
-
-star_frames = [] #conatins section of star image, 4 frame of tar from brigth to dim
-frame_width = 32
-for i in range(4):
+star_frames = [] #contains section of star image, 4 frame of star from brigth to dim
+frame_width = 32 # width of each frame of star img
+# Stores the four section of star img into star_frames list
+for i in range(4): 
     star_rect = pygame.Rect(i*frame_width, 0, frame_width, 32)
     surf = star_img.subsurface(star_rect).copy()
     star_frames.append(surf)
-
-frame_no=[]
+frame_no=[] # Stores the total number of stars. change for loop (20) to change number of star
 for _ in range(20):
     ran = randint(0,3)
     frame_no.append(ran)
-star_pos  = []
+star_pos  = [] # stores (x,y) position for each star in frame_no
 for _ in range(20):
     x = randint(0,800)
     y = randint(0,600)
     star_pos.append((x,y))
 
-def draw_background(screen):
-    for i in range(20):
-        screen.blit(star_frames[frame_no[i]],star_pos[i])
-
 player = Player((90,20))
-
+score = 0
 
 run = True
 while run:
@@ -189,6 +200,7 @@ while run:
         if collidedBlock is not None:
             correctAnswer = ques["correct_answer"]
             if collidedBlock.text == correctAnswer:
+                score += 1
                 ques = next_question()
                 DisplayQuestion = ques['question']
                 label.set_text(DisplayQuestion)
@@ -215,18 +227,18 @@ while run:
             
 
         #Displaying on Screen 
-        screen.fill((0,0,0))
-        draw_background(screen)
-        all_blocks.update(dt, speed_of_block)
-        all_blocks.draw(screen)
-        player.draw(screen,dt)
-        label.draw(screen)
-        draw_heart(lifes)
-
-        for block in all_blocks.copy():
+        screen.fill((0,0,0)) #Painting Whole Screen Black
+        draw_background(screen) # Adding stars
+        all_blocks.update(dt, speed_of_block) 
+        all_blocks.draw(screen) # Adding all the blocks
+        player.draw(screen,dt) # Adding Player 
+        label.draw(screen) # Adding Question Label
+        draw_heart(lifes) # Adding Hearts
+        draw_score(screen, score)
+        # Removes all the Block that fall out screen
+        for block in all_blocks.copy(): 
             if block.rect.top > HEIGHT:
                 all_blocks.remove(block)
-        
 
 
     # Flip display
