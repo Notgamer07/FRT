@@ -152,5 +152,5 @@ python3 testfile.py
 * Add dynamic creation of arthmatic question (probably will use code from Math-Game repo of mine.)
 * Add image of player and more features.  
 
-**IF you have read this till now and are infurated by this and Please consider me for internship at your place as** 🥹🥹🥹  
+**IF you have read this till now and are infurated by this and Please consider me for internship at your workplace. ** 🥹🥹🥹  
 📧 Email: [jagrath07@gmail.com](mailto:jagrath07@gmail.com) 
