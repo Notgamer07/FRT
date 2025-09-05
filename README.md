@@ -7,7 +7,7 @@ to install via terminal(if you have created Virtual Environment already):
 pip install pygame-ce==2.5.4
 ```
 
-**If You Don't Have Know How To Create Virtual Environment Then**
+**If You Don't Know How To Create Virtual Environment Then**
 
 *  **ON WINDOWS**
 ```bash
