@@ -8,6 +8,10 @@ from UI import Block, Label
 
 
 def collision(obj, player, button)->bool:
+    # Checks whether the button has collided or not and if collided, is it correct button or not
+    # Returns None, if not collided
+    # Returns True, if block/button collided and correct block/block.
+    # Returns False, if block/butoon collided but incorrect block/block.
     if player.colliderect(button.rect):
         if obj.correct == button.text:
             return True
@@ -15,7 +19,7 @@ def collision(obj, player, button)->bool:
             return False
     return None
 
-def heart(lifes):
+def heart(lifes): # Draws the Heart on the Screen
     for i in range(lifes):
         health_rect.center = (WIDTH-50-i*22, 20)
         screen.blit(health, health_rect)
@@ -148,29 +152,31 @@ while run:
         speedOfBlock = 350
 
     """Collision"""
-    collidedButton : list[Block, bool] =[None, None]
+    collidedButton : list[Block, bool] =[None, None] # variable to store the buttons that had collided 
     for button in all_block:
-        result = collision(q, player, button)
-        if result is True:
-            collidedButton = [button, True]
+        result = collision(q, player, button) # Checked whether the block has collided or not.. 
+        if result is True: 
+            collidedButton = [button, True] # Store the collided button state as correct block
             break
         elif result is False:
-            collidedButton = [button, False]
+            collidedButton = [button, False] # store the collided button state as incorrect block
             break
-    if collidedButton[0] is not None:
-        if collidedButton[1] == True:
-            score += 1
+    if collidedButton[0] is not None: # Works when button/block has collided
+        if collidedButton[1] == True: # Correct block/button 
+            score += 1 
             play(sfx="ScoreUp")
             if questionNumber < 3:
                 questionNumber += 1
                 q = Question(level, questionNumber)
+                label.set_text(q.question)
             elif level < 10:
                 level += 1
                 questionNumber = 1
                 q = Question(level,questionNumber)
+                label.set_text(q.question)
             elif level == 10:
                 current_screen = 'victory'
-        elif collidedButton[1] == False:
+        elif collidedButton[1] == False: # Incorrect button collided
             lifes -= 1
             if lifes == 0:
                 current_screen = 'defeat'

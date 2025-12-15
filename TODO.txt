@@ -6,7 +6,7 @@ Task 2                    Gameplay Experience          Pending                  
 
 Task 3                    Fix Gameplay                 Work in Progress         (main.py) the player is being allowed to out of screen which shouldn't be allowed
 
-task 4                    Fix GAME                     Work in Progress         (main.py) The question is not being updated in the 'Game' Screen and 'Defeat' Screen is broken.
+task 4                    Fix GAME                     Done                     (main.py) The question is not being updated in the 'Game' Screen and 'Defeat' Screen is broken.
 
 Task 5                    Improve Game Quality         Pending                  (main.py) Currently the player is just an rectangluar blob, needs some design.
 
