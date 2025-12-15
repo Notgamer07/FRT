@@ -4,7 +4,7 @@ Task 1                    Improve Performance          Pending                  
 
 Task 2                    Gameplay Experience          Pending                  (audio) Needs new and better audio for all purposes. background music, SFX. etc
 
-Task 3                    Fix Gameplay                 Work in Progress         (main.py) the player is being allowed to out of screen which shouldn't be allowed
+Task 3                    Fix Gameplay                 Done                     (main.py) the player is being allowed to out of screen which shouldn't be allowed
 
 task 4                    Fix GAME                     Done                     (main.py) The question is not being updated in the 'Game' Screen and 'Defeat' Screen is broken.
 

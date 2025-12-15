@@ -185,9 +185,9 @@ while run:
         # Player Movement
     direction = pygame.math.Vector2(0, 0)
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] and player.right >= 0: #Pressing Left and player isn't out of bounds of left screen
+    if keys[pygame.K_LEFT] and player.left >= 0: #Pressing Left and player isn't out of bounds of left screen
         direction.x = -1
-    elif keys[pygame.K_RIGHT] and player.left <= WIDTH: #Pressing Right and player isn't out of right screen
+    elif keys[pygame.K_RIGHT] and player.right <= WIDTH: #Pressing Right and player isn't out of right screen
         direction.x = 1
 
     playerPos += direction * speed * dt
