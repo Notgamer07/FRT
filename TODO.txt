@@ -1,0 +1,13 @@
+Task No                         Purpose                 Status                    Description
+
+Task 1                    Improve Performance          Pending                  (main.py) has variable 'q' that is being initialised new object of Question Class(datahandle.py) everytime new question is needed. Class news a method to update the question.
+
+Task 2                    Gameplay Experience          Pending                  (audio) Needs new and better audio for all purposes. background music, SFX. etc
+
+Task 3                    Fix Gameplay                 Work in Progress         (main.py) the player is being allowed to out of screen which shouldn't be allowed
+
+task 4                    Fix GAME                     Work in Progress         (main.py) The question is not being updated in the 'Game' Screen and 'Defeat' Screen is broken.
+
+Task 5                    Improve Game Quality         Pending                  (main.py) Currently the player is just an rectangluar blob, needs some design.
+
+Task 6                    Better Graphics              Eh ....                  (display_elements.py & imp) Needs better graphics for 'Victory' & 'Defeat' Screens
