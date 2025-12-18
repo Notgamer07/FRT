@@ -18,3 +18,5 @@ Task 8                    Improve Gameplay             Pending                  
 
 Task 9                    Extend Gameplay              Pending                  (datahandle.py) Add webscraping such that it can scrap questions from web to kind of 'refresh' its question data.
                                                                                 could be done by using AI to create such simplier questions for every run or setting up an specific URL to continously post data.
+
+Task 10                   Improve Code quality         Pending                  (UI folder) remove assertions in the class function

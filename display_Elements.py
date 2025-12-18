@@ -69,9 +69,13 @@ def falling_animation(screen, buttons, dt, Speed=200):
         
 def draw_defeat(screen)->str:
     screen.blit(defeat_img,defeat_rect)
+    quitButton = RaisedButton(300,500,(200,60),"QUIT",(250,100,100),(255,50,50), hover = True, autofit=True)
     retry_button = Button(350,400,(100,80),"RETRY",(255, 182, 193),(245, 162, 173),True,autofit=True)
     retry_button.config(bold=True)
     retry_button.draw(screen)
+    quitButton.draw(screen)
+    if quitButton.isClicked():
+        pygame.quit()
     if retry_button.isClicked():
         return 'game'
     pygame.display.update()
@@ -106,8 +110,12 @@ def menu_button():
 def draw_victory(screen, score : int)->str:
     screen.blit(victory_img,victory_rect)
     retry_button = Button(350,400,(100,80),"RETRY",(255, 182, 193),(245, 162, 173),True,autofit=True)
+    quitButton = RaisedButton(300,500,(200,60),"QUIT",(250,100,100),(255,50,50), hover = True, autofit=True)
     retry_button.config(bold=True)
     retry_button.draw(screen)
+    quitButton.draw(screen)
+    if quitButton.isClicked():
+        pygame.quit()
     if retry_button.isClicked():
         return 'game'
     font = pygame.font.SysFont(None, 36, bold=True)

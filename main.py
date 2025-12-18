@@ -83,7 +83,7 @@ while run:
             if button.isClicked():
                 if i == 0:
                     current_screen = 'game'
-                    update_state()
+                    update_state() # imported form Audio.py. updates audio settings in case nay change is made in the setting after opening up the game
                 elif i == 1:
                     current_screen = 'settings'
                     settings = SettingsUI()
@@ -105,6 +105,9 @@ while run:
 
     '''DEFEAT SCREEN'''
     if current_screen == 'defeat':
+        screen.fill((0,0,0))
+        draw_background(screen)
+        draw_score(screen,score)
         current_screen=draw_defeat(screen)
         if current_screen == 'game':
             update_state()
@@ -116,6 +119,7 @@ while run:
     
     '''VICTORY SCREEN'''
     if current_screen == 'victory':
+        screen.fill((0,0,0))
         draw_background(screen)
         current_screen = draw_victory(screen, score)
         if current_screen == 'game':
