@@ -29,7 +29,7 @@ class Button:
             assert ( x is not None and y is not None), 'Only x-axis position value was given, Need both'
             self.x = x
             self.y = y
-            self.rect = pygame.Rect(x, y, self.width, self.height)
+            self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         if dimension is not None: 
             assert (len(dimension) == 2), "Only Width value was give, Missing Height value also or Too many values was giveb"
             self.width, self.height = dimension
@@ -49,7 +49,7 @@ class Button:
             assert (hover == True), "Cannot Add HoverColor if Hover is False"
             self.hoverColor = hoverColor
         if customFontFilePath is not False:
-            assert(isinstance(customFontSize,str)), "Invalid FIle Address type. File path should be String"
+            assert isinstance(customFontSize,str), "Invalid FIle Address type. File path should be String"
             self.font = pygame.font.Font(customFontFilePath,customFontSize)
         if customFontSize is not False:
             self.font = pygame.font.Font(customFontFilePath,customFontSize) # type: ignore

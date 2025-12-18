@@ -2,6 +2,8 @@ import pygame
 from .button import Button  # Adjust this import if needed
 
 class RaisedButton(Button):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
     def draw(self, screen):
         mouse_pos = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()[0]
