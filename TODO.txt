@@ -10,4 +10,11 @@ task 4                    Fix GAME                     Done                     
 
 Task 5                    Improve Game Quality         Pending                  (main.py) Currently the player is just an rectangluar blob, needs some design.
 
-Task 6                    Better Graphics              Eh ....                  (display_elements.py & imp) Needs better graphics for 'Victory' & 'Defeat' Screens
+Task 6                    Better Graphics              Eh ....                  (display_elements.py & imp) Needs better graphics for 'Victory' & 'Defeat' Screens.
+
+Task 7                    More Gameplay                Pending                  (datahandle.py % data json files) Add data json files to the game.
+
+Task 8                    Improve Gameplay             Pending                  (datahandle.py & data json files) shuffle the data so that every start/run has different question patterns.
+
+Task 9                    Extend Gameplay              Pending                  (datahandle.py) Add webscraping such that it can scrap questions from web to kind of 'refresh' its question data.
+                                                                                could be done by using AI to create such simplier questions for every run or setting up an specific URL to continously post data.
