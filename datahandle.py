@@ -40,6 +40,12 @@ class Question:
         self.correct = ques['correct_answer']# returns currect string from option like "5"
         self.__class__.INDEX_LIST.pop(0)
     
+    @classmethod
+    def reload_data(cls):
+        cls.data = read_data()
+        cls.INDEX_LIST = [i for i in range(0,29)]
+        cls.read_question()
+
 if __name__ == "__main__":
     q = Question()
     print(q.question)

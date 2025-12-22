@@ -1,6 +1,6 @@
 Task No                         Purpose                 Status                    Description
 
-Task 1                    Improve Performance          work in Progress         (main.py) has variable 'q' that is being initialised new object of Question Class(datahandle.py) everytime new question is needed. Class news a method to update the question.
+Task 1                    Improve Performance          Done                     (main.py) has variable 'q' that is being initialised new object of Question Class(datahandle.py) everytime new question is needed. Class news a method to update the question.
 
 Task 2                    Gameplay Experience          Pending                  (audio) Needs new and better audio for all purposes. background music, SFX. etc
 
@@ -14,7 +14,7 @@ Task 6                    Better Graphics              Eh ....                  
 
 Task 7                    More Gameplay                Pending                  (datahandle.py % data json files) Add data json files to the game.
 
-Task 8                    Improve Gameplay             Work in Progress         (datahandle.py & data json files) shuffle the data so that every start/run has different question patterns.
+Task 8                    Improve Gameplay             Done                     (datahandle.py & data json files) shuffle the data so that every start/run has different question patterns.
 
 Task 9                    Extend Gameplay              Pending                  (datahandle.py) Add webscraping such that it can scrap questions from web to kind of 'refresh' its question data.
                                                                                 could be done by using AI to create such simplier questions for every run or setting up an specific URL to continously post data.

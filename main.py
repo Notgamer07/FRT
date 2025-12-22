@@ -47,10 +47,8 @@ speed = 400
 direction = pygame.math.Vector2(0,0)
 
 score = 0
-level = 1
-questionNumber = 1
 
-q = Question(level,questionNumber)
+q = Question() 
 label = Label(
         0, 0, (450, 40), q.question,
         color=(0,0,0), text_color=(177, 90, 255),
@@ -109,11 +107,14 @@ while run:
         draw_background(screen)
         draw_score(screen,score)
         current_screen=draw_defeat(screen)
+        if current_screen == 'quit':
+            run=False
+            break
         if current_screen == 'game':
             update_state()
-            level, questionNumber = 1,1
             lifes = 3
-            q = Question(level, questionNumber)
+            q.reload_data()
+            q.next_question()
             buttons = []
         continue
     
@@ -124,9 +125,9 @@ while run:
         current_screen = draw_victory(screen, score)
         if current_screen == 'game':
             update_state()
-            level, questionNumber = 1,1
             lifes = 3
-            q = Question(level, questionNumber)
+            q.reload_data()
+            q.next_question()
             buttons = []
         continue
 
@@ -137,22 +138,22 @@ while run:
     if (globalTime - blocksTime) >= cooldownTimer:
         blocksTime = pygame.time.get_ticks()
         all_block = falling_button(q, all_block)
-        if level > 7 and cooldownTimer >= 800:
-             cooldownTimer = 400
-        elif level > 3 and cooldownTimer >= 1000:
-            cooldownTimer =  800
-        elif level >= 9 and cooldownTimer >= 350:
+        if score >= 27 and cooldownTimer >= 350:
             cooldownTimer = 200 
+        elif score > 21 and cooldownTimer >= 800:
+             cooldownTimer = 400
+        elif score > 9 and cooldownTimer >= 1000:
+            cooldownTimer =  800
         elif cooldownTimer >= 1200:
-            cooldownTimer = 2000 - (level + questionNumber) * 100
+            cooldownTimer = 2000 - (score) * 100
         cooldownTimer += random.randint(0,5)*50  #adding 0.0 to 0.5s randomness in summoning falling blocks
 
     # Speed of Falling Blocks
-    if level>=3 and level < 6 and speedOfBlock != 240:
+    if score>=9 and score < 18 and speedOfBlock != 240:
         speedOfBlock = 240
-    elif level < 9 and level >= 6 and speedOfBlock != 290:
+    elif score < 27 and score >= 18 and speedOfBlock != 290:
         speedOfBlock = 290
-    elif level <=10 and level >= 9 and speedOfBlock != 350:
+    elif score >= 27 and speedOfBlock != 350:
         speedOfBlock = 350
 
     """Collision"""
@@ -169,17 +170,11 @@ while run:
         if collidedButton[1] == True: # Correct block/button 
             score += 1 
             play(sfx="ScoreUp")
-            if questionNumber < 3:
-                questionNumber += 1
-                q = Question(level, questionNumber)
+            try:
+                q.next_question()
                 label.set_text(q.question)
-            elif level < 10:
-                level += 1
-                questionNumber = 1
-                q = Question(level,questionNumber)
-                label.set_text(q.question)
-            elif level == 10:
-                current_screen = 'victory'
+            except IndexError:
+                current_screen = "victory"
         elif collidedButton[1] == False: # Incorrect button collided
             lifes -= 1
             if lifes == 0:

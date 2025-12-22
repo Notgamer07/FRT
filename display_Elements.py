@@ -76,6 +76,7 @@ def draw_defeat(screen)->str:
     quitButton.draw(screen)
     if quitButton.isClicked():
         pygame.quit()
+        return 'quit'
     if retry_button.isClicked():
         return 'game'
     pygame.display.update()
