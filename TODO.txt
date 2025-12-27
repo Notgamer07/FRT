@@ -12,7 +12,7 @@ Task 5                    Improve Game Quality         Pending                  
 
 Task 6                    Better Graphics              Eh ....                  (display_elements.py & imp) Needs better graphics for 'Victory' & 'Defeat' Screens.
 
-Task 7                    More Gameplay                Pending                  (datahandle.py % data json files) Add data json files to the game.
+Task 7                    More Gameplay                Dropped                  (datahandle.py % data json files) Add data json files to the game.
 
 Task 8                    Improve Gameplay             Done                     (datahandle.py & data json files) shuffle the data so that every start/run has different question patterns.
 
