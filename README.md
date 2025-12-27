@@ -1,6 +1,7 @@
 ## FRT
 
 requirements : pygame-ce       2.5.4
+and python 3.12 or check whether the pygame-ce 2.5.4 is compatible with newer version
 
 to install via terminal(if you have created Virtual Environment already): 
 ```bash 

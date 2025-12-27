@@ -48,38 +48,50 @@ def draw_background(screen):
         screen.blit(star_frames[frame_no[i]],star_pos[i])
 
 
-def falling_button(ques : Question , buttons : list)->list:
-    listOfButton = buttons
-    optionText = ques.option[randint(0,3)]
-    x_position = randint(0,800 - 80 ) # 800 is Width of the screen
-    button = Block(x_position,-80,(80,80),text=str(optionText),color=COLOR[randint(0, (len(COLOR))-1)],bold=True)
-    listOfButton.append(button)
-    return listOfButton
+def falling_button(ques: Question, block_group: pygame.sprite.Group) -> pygame.sprite.Group:
+    optionText = ques.option[randint(0, 3)]
+    x_position = randint(0, 800 - 80)  # screen width - block width
+    button = Block(
+        x_position, 
+        -80, 
+        (80, 80),
+        text=str(optionText),
+        color=COLOR[randint(0, len(COLOR) - 1)],
+        bold=True
+    )
+    block_group.add(button)
+    return block_group
 
-def falling_animation(screen, buttons, dt, Speed = 200):
-    if buttons is []:
-        pass
+def falling_animation(screen, buttons, dt, Speed=200):
     for button in buttons:
-        button.move(dy=int(Speed*dt))
-        button.draw(screen)
-    
+        button.fall(Speed * dt)  # smooth float-based movement
+        button.draw(screen)    
         
 def draw_defeat(screen)->str:
     screen.blit(defeat_img,defeat_rect)
+    quitButton = RaisedButton(300,500,(200,60),"QUIT",(250,100,100),(255,50,50), hover = True, autofit=True)
     retry_button = Button(350,400,(100,80),"RETRY",(255, 182, 193),(245, 162, 173),True,autofit=True)
     retry_button.config(bold=True)
     retry_button.draw(screen)
+    quitButton.draw(screen)
+    if quitButton.isClicked():
+        pygame.quit()
+        return 'quit'
     if retry_button.isClicked():
         return 'game'
     pygame.display.update()
     return 'defeat'
 
-def draw_label(screen,question):
-    label = Label(0,0,(450,40),question,(0,0,0),(177, 90, 255),('Arial',40),True,autofit=True)
-    label.rect.center = (400,70)
-    padding = 4 # padding in pixels
-    rect = pygame.Rect(label.rect.left-padding,label.rect.top-padding, label.rect.width+(2*padding),label.rect.height+(2*padding))
-    pygame.draw.rect(screen,(255,255,255),rect)
+def draw_label(screen, label):
+    # draw white border with padding
+    padding = 4
+    rect = pygame.Rect(
+        label.rect.left - padding,
+        label.rect.top - padding,
+        label.rect.width + (2*padding),
+        label.rect.height + (2*padding)
+    )
+    pygame.draw.rect(screen, (255,255,255), rect)
     label.draw(screen)
 
 def draw_score(screen,score):
@@ -99,8 +111,12 @@ def menu_button():
 def draw_victory(screen, score : int)->str:
     screen.blit(victory_img,victory_rect)
     retry_button = Button(350,400,(100,80),"RETRY",(255, 182, 193),(245, 162, 173),True,autofit=True)
+    quitButton = RaisedButton(300,500,(200,60),"QUIT",(250,100,100),(255,50,50), hover = True, autofit=True)
     retry_button.config(bold=True)
     retry_button.draw(screen)
+    quitButton.draw(screen)
+    if quitButton.isClicked():
+        pygame.quit()
     if retry_button.isClicked():
         return 'game'
     font = pygame.font.SysFont(None, 36, bold=True)
