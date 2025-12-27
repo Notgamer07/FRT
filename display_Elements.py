@@ -5,7 +5,7 @@ import random
 from os.path import join, dirname
 from datahandle import Question, save_gameState, get_gameState
 
-__all__ = ['falling_button', 'falling_animation', 'draw_defeat', 
+__all__ = ['falling_block', 'falling_animation', 'draw_defeat', 
            'draw_label', 'draw_background', 'draw_score', 
            'menu_button', 'draw_victory', 'SettingsUI']
 
@@ -48,7 +48,7 @@ def draw_background(screen):
         screen.blit(star_frames[frame_no[i]],star_pos[i])
 
 
-def falling_button(ques: Question, block_group: pygame.sprite.Group) -> pygame.sprite.Group:
+def falling_block(ques: Question, block_group: pygame.sprite.Group): # this fnc is call by ref so no need for return
     optionText = ques.option[randint(0, 3)]
     x_position = randint(0, 800 - 80)  # screen width - block width
     button = Block(
@@ -60,7 +60,6 @@ def falling_button(ques: Question, block_group: pygame.sprite.Group) -> pygame.s
         bold=True
     )
     block_group.add(button)
-    return block_group
 
 def falling_animation(screen, buttons, dt, Speed=200):
     for button in buttons:
@@ -116,7 +115,7 @@ def draw_victory(screen, score : int)->str:
     retry_button.draw(screen)
     quitButton.draw(screen)
     if quitButton.isClicked():
-        pygame.quit()
+        return 'quit'
     if retry_button.isClicked():
         return 'game'
     font = pygame.font.SysFont(None, 36, bold=True)
