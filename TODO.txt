@@ -23,4 +23,4 @@ Task 10                   Improve Code quality         Pending                  
 
 Task 11                   Game Structure               Pending                  (main.py & display_elements.py) add settings button and setting page to victory and defeat Screens
 
-Task 12(temp)             Extend Gameplay              Pending                  (data json files) combine data.json & new_data.json to the data1.json in its format. 
+Task 12(temp)             Extend Gameplay              working                  (data json files) combine data.json & new_data.json to the data1.json in its format. 
