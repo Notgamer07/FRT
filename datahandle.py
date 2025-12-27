@@ -1,6 +1,6 @@
 import json
 import random as r
-def read_data():
+def read_data()->dict:
     with open('data1.json','r')as f:
         data = json.load(f)
     return data
@@ -10,14 +10,14 @@ def get_gameState()->dict:
         game_state = json.load(f)
     return game_state
 
-def save_gameState(data):
+def save_gameState(data:dict):
     with open('settings.json','w') as f:
         json.dump(data, f, indent= 4)
 
 
 class Question:
-    INDEX_LIST = [i for i in range(0,30)]
     data = read_data()
+    INDEX_LIST = [i for i in range(0,len(data))]
     def __init__(self):
         ques = self.__class__.read_question()
         self.question = ques['question'] # returns a string like "What is 2 + 3 ?"
@@ -43,13 +43,5 @@ class Question:
     @classmethod
     def reload_data(cls):
         cls.data = read_data()
-        cls.INDEX_LIST = [i for i in range(0,29)]
+        cls.INDEX_LIST = [i for i in range(0,len(cls.data))]
         cls.read_question()
-
-if __name__ == "__main__":
-    q = Question()
-    print(q.question)
-    print(q.correct)
-    q.next_question()
-    print(q.question)
-    print(q.correct)
