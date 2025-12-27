@@ -20,3 +20,7 @@ Task 9                    Extend Gameplay              Pending                  
                                                                                 could be done by using AI to create such simplier questions for every run or setting up an specific URL to continously post data.
 
 Task 10                   Improve Code quality         Pending                  (UI folder) remove assertions in the class function
+
+Task 11                   Game Structure               Pending                  (main.py & display_elements.py) add settings button and setting page to victory and defeat Screens
+
+Task 12(temp)             Extend Gameplay              Pending                  (data json files) combine data.json & new_data.json to the data1.json in its format. 
