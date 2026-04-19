@@ -1,7 +1,39 @@
 ## FRT
 
+Game has Four windows:
+-> Menu Screen
+-> Settings Screen
+-> GamePlay Screen
+-> Defeat Screen
+
+
+*technically there is a fifth screen as well, but it is a BUG that is to be removed after i am done with task 13*☺️
+**MENU SCREEN**
+![MENU SCREEN](description/img/title_screen.png)
+
+Very straight forward. 
+Enter the Game 
+Change Settings
+or Quit
+
+
+**GAME SCREEN**
+![GAME SCREEN](description/img/game_screen.png)
+
+Currently the player is that white rectangular blob with no personality but it will be customizationable in future .. (in near future ☺️)
+
+Your mission to move the *Player* Left or Right to either let falling *Option* collide with *Player* if the option is correct or avoid *Option* if it isn't
+
+Questions will appear on the Top Centre Label. They will change when *Player* collides with *Option* irrespective of right or wrong.
+
+If the *Player* Collides with Correct *Option* Then Score will go up by 1
+If the *Player* Collides with Wrong *Option* Then 1 *Life* will be deducted and when no *Lifes* are left, The Game ends in defeat and  *Defeat Screen* is displayed.
+
+**Defeat Screen**
+![DEFEAT SCREEN](description/img/defeat_screen.png)
+
 requirements : pygame-ce       2.5.4
-and python 3.12 or check whether the pygame-ce 2.5.4 is compatible with newer version
+and **python 3.12 or check whether the pygame-ce 2.5.4 is compatible with newer version**
 
 to install via terminal(if you have created Virtual Environment already): 
 ```bash 
@@ -153,5 +185,5 @@ python3 testfile.py
 * Add dynamic creation of arthmatic question (probably will use code from Math-Game repo of mine.)
 * Add image of player and more features.  
 
-**IF you have read this till now and are infurated by this and Please consider me for internship at your place as** 🥹🥹🥹  
+**IF you have read this till now and are infurated by this and Please consider me for internship at your place** 🥹🥹🥹  
 📧 Email: [jagrath07@gmail.com](mailto:jagrath07@gmail.com) 
