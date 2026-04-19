@@ -134,6 +134,7 @@ class SettingsUI:
         self.volumeButton = None
         self.musicButton = None
         self.backButton = None
+        self._create_buttons()
 
     def _create_buttons(self):
         if self.volumeButton is None:
@@ -199,6 +200,6 @@ class SettingsUI:
         self.game_state[key] = value
         save_gameState(self.game_state)
 
-    def back_pressed(self):
-        return self.backButton and self.backButton.isClicked()
+    def back_pressed(self)->bool:
+        return self.backButton.isClicked()
     
