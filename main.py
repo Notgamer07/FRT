@@ -7,7 +7,7 @@ from os.path import dirname, join
 from UI import Block, Label
 
 
-def collision(obj, player, button)->bool:
+def collision(obj, player, button)->bool | None:
     # Checks whether the button has collided or not and if collided, is it correct button or not
     # Returns None, if not collided
     # Returns True, if block/button collided and correct block/block.
@@ -30,6 +30,7 @@ pygame.init()
 WIDTH = 800
 HEIGHT = 600
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
+pygame.display.set_caption("FRT : Please Do Enjoy :) ")
 
 playerWidth = 90
 playerHeight = 20
@@ -65,6 +66,7 @@ current_screen = 'menu'
 blocksTime = 0
 speedOfBlock = 200
 all_block = pygame.sprite.Group()
+settings : SettingsUI = SettingsUI()
 while run:
     globalTime = pygame.time.get_ticks()
     dt = clock.tick(200) / 1000 #delta time in seconds, FPS is set 200 for smooth animation.
@@ -73,6 +75,7 @@ while run:
             run = False
     '''MENU SCREEN'''
     if current_screen == 'menu':
+        screen.fill((0,0,0))
         cooldownTimer = 2000 #2 secons
         draw_background(screen)
         for i,block in enumerate(menuButtons):
@@ -83,7 +86,6 @@ while run:
                     update_state() # imported form Audio.py. updates audio settings in case nay change is made in the setting after opening up the game
                 elif i == 1:
                     current_screen = 'settings'
-                    settings = SettingsUI()
                 else:
                     run = False
 
@@ -93,6 +95,7 @@ while run:
 
     '''SETTING SCREEN'''
     if current_screen == 'settings':
+        screen.fill((0,0,0))
         draw_background(screen)
         settings.draw(screen)
         if settings.back_pressed():
